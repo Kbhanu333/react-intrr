@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Props</h1> 
+    <h3>App.js</h3>
+    <pre>
+import React from 'react';
+import CompA from './Components/compA';
+const App = () => {
+  return (
+    < div>
+      < CompA/>  
+    </ div>
+   );
+   }
+
+export default App;
+    </pre>
+    <h3>CompA</h3>
+    <pre>
+import React from 'react';
+import CompB from "./CompB";
+
+const CompA = ()=>{
+    return(
+        < >
+        < CompB text = {"pass data from child to parent"}/>
+        < / >
+    )
+}
+export default CompA;
+    </pre>
+    <h3>CompB</h3>
+    <pre>
+import React from "react";
+
+const CompB = (props)=>{
+    return(
+        < >
+        {props.text}
+        < / >
+    )
+}
+export default CompB;
+    </pre>
+
+    <hr>
+    <h1>Routing </h1>
+    <h3>App.js</h3>
+    <pre>
+import React from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Home from './Components/Home';
+import About from './Components/About';
+
+
+const App = () => {
+    return (
+        < >
+        < BrowserRouter>
+        < Routes>
+            < Route path="/" element={< Home/>} />
+            < Route path="about" element={< About/>} />
+        </ Routes>
+        </ BrowserRouter>    
+            
+        < / >
+    );
+}
+
+export default App;
+    </pre>
+    <hr>
+  
+    <h1>Context API</h1>
+    <h3>App.js</h3>
+    <pre>
+        import React from 'react';
+        import ComponentA from './Components/ComponentA';
+        import { createContext } from 'react';
+        
+        const data = createContext();
+        
+        const App = () => {
+          const Name = "Prasad"
+        
+          return (
+            < div className='App'>
+              < h1>from App.js: {Name}</ h1>  < h1 >
+              < data.Provider value={Name}> 
+              < ComponentA/>
+              </ data.Provider>
+            </ div> < div >
+          );
+        }
+        
+        export default App;
+        export {data};
+            
+    </pre>
+
+
+    <h3>Components/ComponentsA folder</h3>
+<pre>
+    import React from 'react';
+    import ComponentB from './ComponentB';
+    
+    
+    const ComponentA = () => {
+        return (
+            < div>from ComponentA: 
+            < ComponentB/>    
+            </ div> < div >
+        );
+    }
+    
+    export default ComponentA;
+</pre>
+
+<h3>Components/ComponentsB folder</h3>
+
+<pre>
+    import React from 'react';
+    import { useContext } from 'react';
+    import {data} from './../App';
+    
+    function ComponentB()  {
+        const Nameone = useContext(data);
+        
+        return (
+            < div> from ComponentB:{Nameone}
+                
+            </ div> < div >
+        );
+    }
+    
+    export default ComponentB;
+</pre>
+<hr>
+
+
+<h1>UseMemo</h1>
+<h3>App.js</h3>
+<pre>
+    import React, {useMemo, useState} from 'react';
+
+    const App = () => {
+    const [one, setOne] =  useState(0);
+    const [two, setTwo] = useState(0);
+        
+        const changeone = () =>{
+            setOne(one+1)
+        }
+        const changetwo = ()=>{
+            setTwo(two +1)
+        }
+        const isEven = useMemo(()=>{
+            let i=0;
+            while(i < 1000000) i++;
+            return (one % 2 === 0);
+        },[one])
+    return (
+        < div >
+          first value: {one} < br />
+          second value: {two}
+          < button onClick={changeone}>Click one< /button>
+          {isEven ? "Even" : "ODD"}
+          < button onClick={changetwo}>Click two< / button>
+         
+        < / div >
+    );
+}
+
+export default App;
+</pre>
+<hr>
+
+<h1>Fetch API</h1>
+<h3>App.js</h3>
+<pre>
+    import React from 'react';
+    import FetchApi from './Components/FetchApi';
+    
+    const App = () => {
+      return (
+        < div>
+          < FetchApi/>
+        </ div>  < div
+      );
+    }
+    
+    export default App;    
+</pre>
+<h3>Components/FetchApi folder</h3>
+<pre>
+    import React, { useEffect, useState } from 'react'
+
+    export default function FetchApi() {
+        const [data , setData] = useState("");
+        useEffect(()=>{
+            fetch('https://jsonplaceholder.typicode.com/users')
+            .then(Response => Response.json())
+            .then(json => {setData(json)
+                console.log(json);
+            })
+            .catch((err)=>console.log('err'))  
+        },[])
+    
+      return (
+        < div>
+            < h1>This Is Mapping</ h1> < h1
+            {
+                data && data.map((value) =>{ 
+                    return(
+                        < div>
+                            {value.name}
+                        </ div> div
+                    )
+                })
+            }
+        </ div> div
+      )
+    }
+</pre>
+<hr>
+
+<h1>useState Count</h1>
+<h3>App.js</h3>
+<pre>
+    import {useState } from "react"
+    import './App.css';
+    
+    function App() {
+      const[value,setValue]=useState(0)
+    
+      const increment=()=>{
+      setValue(value+1)
+      console.log(value)
+      }
+      const decrement=()=>{
+        setValue(value-1)
+        }
+      
+    
+    
+      return (
+        < div className="App">
+         < h1>{value}</ h1>
+         < button onClick={increment}>Increment</ button> button> <br/> <br/>
+         < button onClick={decrement}>Decrement</ button> button>
+    </ div> div
+      );
+    }
+    
+    export default App;
+</pre>
+
+
+<hr>
+
+<h1>useEffect Hook</h1>
+<h3>App.js</h3>
+<pre>
+    import React from 'react';
+    import UseEffectfile from './Components/useEffectfile';
+    
+    
+    const App = () => {
+      return (
+        < div>
+          < UseEffectfile/>
+        </ div> < div >
+      );
+    }
+    
+    export default App;
+</pre>
+<h3>Components/useeffectfile folder</h3>
+<pre>
+    import React, { useEffect, useState} from 'react';
+
+    const UseEffectfile = () => {
+        const [name, setName]=useState("Bhanu prasad");
+    
+        useEffect(()=>{
+            setName(name)
+            console.log(name)
+        }, [name])
+        return (
+            < div>
+                < h1 >Hello {name}</ h1 > < h1 >
+            </ div > < div >
+        );
+    }
+    
+    export default UseEffectfile;
+</pre>
+<hr>
+<h1>UseReducer</h1>
+<h3>App.js</h3>
+<pre>
+  import React, {useReducer} from 'react';
+
+  const App = () => {
+      const reduce=(state, action)=>{
+          switch(action.type){
+          case "Incr"
+          return state+1
+          case "Decr"
+          return state-1  
+      
+          }
+  
+      }
+      let initial = 0;
+      const [state, dispatch] = useReducer(reduce , initial)
+      return (
+          < div >
+              {state}
+              < button onClick={()=>{dispatch({type:"Incr"})}}>Increment< button/>
+              < button onClick={()=>{dispatch({type:"Decr"})}}>Decrement< button/>
+              
+          < /div >
+      );
+  }
+  
+  export default App;
+</pre>
+<hr>
+<h1>UseRef</h1>
+<h3>App.js</h3>
+<pre>
+  import React, {useRef} from 'react';
+
+const App = () => {
+    const name= useRef();
+    const email = useRef();
+
+    const handleclick=()=>{
+        const res1 = name.current.value;
+        const res2 = email.current.value;
+        console.log(res1, res2)
+    }
+    return (
+        < div>
+            < input type="text" ref= {name}/>
+            < input type="email" ref = {email}/>
+            < input type="submit" onClick={handleclick} />
+            
+        < /div >
+    );
+}
+
+export default App;
+</pre>
+
+</body>
+</html>
